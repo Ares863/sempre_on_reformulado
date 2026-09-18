@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Painel administrativo da Sempre On Celulares — gerencie clientes, ordens de serviço e serviços.">
+<meta name="theme-color" content="#071016">
+<meta name="robots" content="noindex">
+<title>Painel | Sempre On Celulares</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container navin">
+    <a class="logo" href="../index.html">SEMPRE<span>ON</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <div class="links" id="navLinks">
+      <a href="../index.html" data-page="inicio">Início</a>
+      <a href="admin.html" data-page="admin" class="active" style="color:var(--accent)">Painel</a>
+    </div>
+    <a class="btn" href="../index.html">Ver site</a>
+  </div>
+</nav>
+
+<!-- Login do painel -->
+<div class="container auth-wrap" id="adminLogin">
+  <div class="auth-card">
+    <div class="eyebrow">Painel administrativo</div>
+    <h1>Acesso restrito</h1>
+    <p class="sub">Somente administradores da Sempre On podem acessar.</p>
+    <form id="formAdminLogin" novalidate>
+      <div class="field"><label>E-mail do administrador</label><input id="adEmail" type="email" required value="admin@sempreon.com.br"></div>
+      <div class="field"><label>Senha</label><input id="adSenha" type="password" required placeholder="••••••••"></div>
+      <button class="btn" style="width:100%" type="submit" id="btnAdminLogin">Entrar no painel</button>
+    </form>
+    <div class="demo-hint">
+      🔐 <strong>Dica de acesso:</strong> com o servidor rodando (<code>node server.js</code>), entre com <code>admin@sempreon.com.br</code> / <code>Admin@123</code>. Sem servidor, cai em modo demonstração.
+    </div>
+    <div class="form-result" id="adResultado"></div>
+  </div>
+</div>
+
+<!-- Painel -->
+<div id="adminPainel" style="display:none">
+  <section style="padding-top:40px">
+    <div class="container">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Painel administrativo</div>
+          <h1 style="font-size:clamp(22px,3.4vw,30px);letter-spacing:-1px;margin-top:6px">Gerenciamento</h1>
+        </div>
+        <div class="gap">
+          <span class="avatar" id="adChip">A</span>
+          <button class="btn sm ghost" id="btnAdminSair">Sair</button>
+        </div>
+      </div>
+
+      <div class="admin-shell mt-4">
+        <aside class="admin-side" id="adminSide">
+          <a href="#tab-dash" data-tab="dash" class="active">📊 Dashboard</a>
+          <a href="#tab-clientes" data-tab="clientes">👥 Clientes</a>
+          <a href="#tab-ordens" data-tab="ordens">🛠️ Ordens de serviço</a>
+          <a href="#tab-servicos" data-tab="servicos">🧰 Serviços</a>
+          <a href="#tab-videos" data-tab="videos">🎬 Vídeos</a>
+        </aside>
+
+        <div>
+          <div class="tab-pane active" id="pane-dash">
+            <div class="dash-grid" id="dashAdmin">
+              <div class="stat"><div class="spinner light" style="margin:6px 0"></div></div>
+              <div class="stat"><div class="spinner light" style="margin:6px 0"></div></div>
+              <div class="stat"><div class="spinner light" style="margin:6px 0"></div></div>
+              <div class="stat"><div class="spinner light" style="margin:6px 0"></div></div>
+            </div>
+            <div class="panel mt-4">
+              <div class="panel-head">
+                <h2>Ordens recentes</h2>
+                <a class="link-more" style="margin:0" href="#tab-ordens" data-tab="ordens">Ver todas →</a>
+              </div>
+              <div id="dashOrdens"></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-clientes">
+            <div class="panel">
+              <div class="panel-head"><h2>Clientes cadastrados</h2><span class="badge gray" id="badgeClientes">0</span></div>
+              <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Aparelhos</th><th>Desde</th></tr></thead><tbody id="tblClientes"></tbody></table></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-ordens">
+            <div class="panel">
+              <div class="panel-head"><h2>Ordens de serviço</h2><div class="gap"><span class="badge warn">Altere o status na coluna Status</span><button class="btn sm" id="btnNovaOS">＋ Nova OS</button></div></div>
+              <div class="table-wrap"><table><thead><tr><th>Ordem</th><th>Cliente</th><th>Aparelho</th><th>Serviço</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody id="tblOrdens"></tbody></table></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-servicos">
+            <div class="panel">
+              <div class="panel-head"><h2>Serviços do catálogo</h2><span class="badge gray">Edição de demonstração</span></div>
+              <div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Preço</th><th>Prazo</th><th>Garantia</th><th>Ações</th></tr></thead><tbody id="tblServicos"></tbody></table></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-videos">
+            <div class="panel">
+              <div class="panel-head">
+                <h2>Vídeos dos serviços</h2>
+                <span class="badge gray">Estrutura para vídeos reais</span>
+              </div>
+              <p class="text-muted" style="margin-bottom:18px">Cole o ID do vídeo do YouTube (ex.: <strong>dQw4w9WgXcQ</strong>) para publicá-lo na página do serviço. Vídeos próprios (.mp4) poderão ser enviados quando o back-end estiver integrado.</p>
+              <div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Título do vídeo</th><th>ID do YouTube</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody id="tblVideos"></tbody></table></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="container footer-grid">
+    <span>© <span id="ano">2026</span> Sempre On Celulares · Painel administrativo</span>
+    <div class="footer-links"><a href="../index.html">Ver site</a><a href="login.html">Área do cliente</a></div>
+  </div>
+</footer>
+
+<!-- Modal: editar serviço -->
+<div class="modal" id="modalServico" role="dialog" aria-modal="true" aria-labelledby="msTitulo">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="msTitulo">Editar serviço</h3><button class="modal-close" aria-label="Fechar">✕</button></div>
+    <div class="modal-body">
+      <form id="formServico" novalidate>
+        <div class="field"><label>Nome do serviço</label><input id="msNome" type="text" required></div>
+        <div class="field"><label>Resumo (exibido nos cards)</label><textarea id="msResumo"></textarea></div>
+        <div class="form-grid">
+          <div class="field" style="margin-bottom:0"><label>Preço ou faixa de preço</label><input id="msPreco" type="text" placeholder="Ex.: a partir de R$ 99,90"></div>
+          <div class="field" style="margin-bottom:0"><label>Prazo estimado</label><input id="msPrazo" type="text"></div>
+        </div>
+        <div class="field mt-3"><label>Garantia</label><input id="msGarantia" type="text"></div>
+        <div class="field"><label>Foto (URL ou caminho do arquivo)</label><input id="msFoto" type="text" placeholder="assets/img/..."></div>
+        <div class="form-result" id="msResultado"></div>
+        <div class="gap mt-3">
+          <button class="btn" type="submit">Salvar alterações</button>
+          <button class="btn ghost" type="button" id="msCancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: nova OS -->
+<div class="modal" id="modalNovaOS" role="dialog" aria-modal="true" aria-labelledby="noTitulo">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="noTitulo">Nova ordem de serviço</h3><button class="modal-close" aria-label="Fechar">✕</button></div>
+    <div class="modal-body">
+      <form id="formNovaOS" novalidate>
+        <div class="field"><label>E-mail do cliente</label>
+          <input id="noEmail" type="email" placeholder="cliente@exemplo.com — se já cadastrado, usamos a conta">
+          <div class="hint" style="margin-top:4px">Se o e-mail não existir, criamos o cadastro com a senha padrão <strong>cliente123</strong>.</div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>Nome (só para cliente novo)</label><input id="noNome" type="text"></div>
+          <div class="field"><label>Telefone (só para cliente novo)</label><input id="noTel" type="tel"></div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>Aparelho</label><input id="noAparelho" type="text" placeholder="Ex.: iPhone 12" required></div>
+          <div class="field"><label>Serviço</label><select id="noServico"></select></div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>Status inicial</label><select id="noStatus"></select></div>
+          <div class="field"><label>Valor</label><input id="noValor" type="text" placeholder="Sob consulta"></div>
+        </div>
+        <div class="field"><label>Descrição do problema</label><textarea id="noDesc"></textarea></div>
+        <div class="field"><label>Garantia</label><input id="noGarantia" type="text" value="Garantia conforme serviço"></div>
+        <div class="form-result" id="noResultado"></div>
+        <div class="gap mt-3">
+          <button class="btn" type="submit">Criar OS</button>
+          <button class="btn ghost" type="button" id="noCancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script src="../js/config.js"></script>
+<script src="../js/servicos.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+// ---------- Abas ----------
+function mudarAba(nome) {
+  document.querySelectorAll('[data-tab]').forEach(function (el) { el.classList.toggle('active', el.getAttribute('data-tab') === nome); });
+  document.querySelectorAll('.tab-pane').forEach(function (p) { p.classList.toggle('active', p.id === 'pane-' + nome); });
+  if (nome === 'clientes') renderClientes();
+  if (nome === 'ordens') renderOrdens();
+  if (nome === 'servicos') renderServicos();
+  if (nome === 'videos') renderVideos();
+}
+document.querySelectorAll('[data-tab]').forEach(function (el) {
+  el.addEventListener('click', function (e) { e.preventDefault(); mudarAba(el.getAttribute('data-tab')); });
+});
+
+// ---------- Estado do painel ----------
+function estadoPainel(mostrar) {
+  document.getElementById('adminLogin').style.display = mostrar ? 'none' : 'block';
+  document.getElementById('adminPainel').style.display = mostrar ? 'block' : 'none';
+}
+
+// ---------- Login do admin ----------
+document.getElementById('formAdminLogin').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnAdminLogin');
+  var email = document.getElementById('adEmail').value.trim();
+  var senha = document.getElementById('adSenha').value;
+  botaoLoading(btn, true);
+  API.login(email, senha).then(function (r) {
+    botaoLoading(btn, false);
+    var res = document.getElementById('adResultado');
+    if (!r.sucesso) { res.className = 'form-result err'; res.textContent = '⚠ ' + r.erro; return; }
+    if (r.dado.tipo !== 'admin') {
+      API.sair();
+      res.className = 'form-result err';
+      res.textContent = '⚠ Este e-mail não é de um administrador.';
+      return;
+    }
+    res.className = 'form-result';
+    estadoPainel(true);
+    document.getElementById('adChip').textContent = r.dado.nome.charAt(0).toUpperCase();
+    carregarDashboard();
+    toast('Bem-vindo ao painel.', 'ok');
+  });
+});
+
+document.getElementById('btnAdminSair').addEventListener('click', function () {
+  API.sair().then(function () {
+    estadoPainel(false);
+    toast('Você saiu do painel.', 'info');
+  });
+});
+
+// ---------- Dashboard ----------
+function carregarDashboard() {
+  API.indicadores().then(function (r) {
+    var k = r.dado;
+    document.getElementById('dashAdmin').innerHTML =
+      '<div class="stat"><div class="num">' + k.clientes + '</div><div class="lbl">Clientes cadastrados</div></div>' +
+      '<div class="stat"><div class="num">' + k.emReparo + '</div><div class="lbl">Aparelhos em reparo</div></div>' +
+      '<div class="stat"><div class="num">' + k.orcamentosPendentes + '</div><div class="lbl">Orçamentos pendentes</div></div>' +
+      '<div class="stat"><div class="num">' + k.prontos + '</div><div class="lbl">Prontos para retirada</div></div>';
+  });
+  API.listarOrdens().then(function (r) {
+    document.getElementById('dashOrdens').innerHTML = tabelaOrdens(r.dado, true);
+  });
+}
+
+// ---------- Clientes ----------
+function renderClientes() {
+  API.listarClientes().then(function (r) {
+    var lista = r.dado;
+    document.getElementById('badgeClientes').textContent = lista.length;
+    document.getElementById('tblClientes').innerHTML = lista.map(function (c) {
+      var qtd = ORDENS_BASE.filter(function (o) { return o.clienteId === c.id; }).length;
+      return '<tr><td><strong>' + c.nome + '</strong></td><td>' + c.telefone + '</td><td>' + c.email + '</td><td>' + qtd + '</td><td>' + c.desde + '</td></tr>';
+    }).join('') || '<tr><td colspan="5" class="empty">Nenhum cliente cadastrado.</td></tr>';
+  });
+}
+
+// ---------- Ordens ----------
+function tabelaOrdens(ordens, simplificado) {
+  if (!ordens.length) return '<div class="empty">Nenhuma ordem de serviço.</div>';
+  var linhas = ordens.map(function (o) {
+    return '<tr>' +
+      '<td class="mono">' + o.numero + '</td>' +
+      '<td>' + o.clienteNome + '</td>' +
+      '<td>' + o.aparelho + '</td>' +
+      '<td>' + (buscarServico(o.servico) ? buscarServico(o.servico).nome : o.servico) + '</td>' +
+      (simplificado ? '' : '<td>' + o.dataEntrada + '</td>') +
+      (simplificado ? '' : '<td>' + o.valor + '</td>') +
+      '<td>' + (simplificado ? pillStatus(o.status) : selectStatus(o.status)) + '</td>' +
+      '</tr>';
+  }).join('');
+  return '<div class="table-wrap"><table><thead><tr>' +
+    '<th>Ordem</th><th>Cliente</th><th>Aparelho</th><th>Serviço</th>' +
+    (simplificado ? '' : '<th>Data</th><th>Valor</th>') +
+    '<th>Status</th></tr></thead><tbody>' + linhas + '</tbody></table></div>';
+}
+function renderOrdens() {
+  API.listarOrdens().then(function (r) {
+    document.getElementById('tblOrdens').innerHTML = r.dado.map(function (o) {
+      return '<tr>' +
+        '<td class="mono">' + o.numero + '</td><td>' + o.clienteNome + '</td>' +
+        '<td>' + o.aparelho + '</td><td>' + (buscarServico(o.servico) ? buscarServico(o.servico).nome : o.servico) + '</td>' +
+        '<td>' + o.dataEntrada + '</td><td>' + o.valor + '</td>' +
+        '<td><select class="mini" data-os="' + o.numero + '">' +
+        STATUS_OPCOES.map(function (s) { return '<option value="' + s.chave + '"' + (s.chave === o.status ? ' selected' : '') + '>' + s.rotulo + '</option>'; }).join('') +
+        '</select></td></tr>';
+    }).join('');
+    document.querySelectorAll('#tblOrdens select[data-os]').forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        API.atualizarStatusOrdem(sel.getAttribute('data-os'), sel.value).then(function (r) {
+          if (r.sucesso) { toast(sel.getAttribute('data-os') + ' atualizada para "' + rotuloStatus(sel.value) + '".', 'ok'); carregarDashboard(); }
+          else toast(r.erro, 'err');
+        });
+      });
+    });
+  });
+}
+
+// ---------- Serviços ----------
+function renderServicos() {
+  API.listarServicos().then(function (r) {
+    document.getElementById('tblServicos').innerHTML = r.dado.map(function (s) {
+      return '<tr>' +
+        '<td><strong>' + s.nome + '</strong><br><span class="small text-muted">' + s.slug + '</span></td>' +
+        '<td>' + s.preco + '</td><td>' + s.prazo + '</td><td>' + s.garantia + '</td>' +
+        '<td><button class="btn sm ghost" data-edit="' + s.slug + '">Editar</button></td></tr>';
+    }).join('');
+    document.querySelectorAll('[data-edit]').forEach(function (b) {
+      b.addEventListener('click', function () { abrirEditarServico(b.getAttribute('data-edit')); });
+    });
+  });
+}
+function abrirEditarServico(slug) {
+  var s = buscarServico(slug);
+  document.getElementById('msTitulo').textContent = 'Editar — ' + s.nome;
+  document.getElementById('msNome').value = s.nome;
+  document.getElementById('msResumo').value = s.resumo;
+  document.getElementById('msPreco').value = s.preco;
+  document.getElementById('msPrazo').value = s.prazo;
+  document.getElementById('msGarantia').value = s.garantia;
+  document.getElementById('msFoto').value = s.foto;
+  document.getElementById('msResultado').className = 'form-result';
+  document.getElementById('msResultado').textContent = '';
+  abrirModal('modalServico');
+  document.getElementById('formServico').onsubmit = function (e) {
+    e.preventDefault();
+    var btn = e.target.querySelector('button[type=submit]');
+    botaoLoading(btn, true);
+    API.salvarServico(slug, {
+      nome: document.getElementById('msNome').value,
+      resumo: document.getElementById('msResumo').value,
+      preco: document.getElementById('msPreco').value,
+      prazo: document.getElementById('msPrazo').value,
+      garantia: document.getElementById('msGarantia').value,
+      foto: document.getElementById('msFoto').value
+    }).then(function (r) {
+      botaoLoading(btn, false);
+      var res = document.getElementById('msResultado');
+      if (r.sucesso) {
+        res.className = 'form-result ok';
+        res.textContent = '✅ Alterações salvas.';
+        toast('Serviço atualizado.', 'ok');
+        renderServicos();
+        setTimeout(function () { fecharModal('modalServico'); }, 900);
+      } else { res.className = 'form-result err'; res.textContent = '⚠ ' + r.erro; }
+    });
+  };
+}
+document.getElementById('msCancelar').addEventListener('click', function () { fecharModal('modalServico'); });
+
+// ---------- Nova OS ----------
+function montarSelect(sel, options, valorInicial) {
+  sel.innerHTML = options.map(function (o) {
+    return '<option value="' + o.chave + '"' + (o.chave === valorInicial ? ' selected' : '') + '>' + o.rotulo + '</option>';
+  }).join('');
+}
+document.getElementById('btnNovaOS').addEventListener('click', function () {
+  document.getElementById('noServico').innerHTML = SERVICOS.map(function (s) { return '<option value="' + s.nome + '">' + s.nome + '</option>'; }).join('');
+  montarSelect(document.getElementById('noStatus'), STATUS_OPCOES, 'recebido');
+  document.getElementById('noResultado').className = 'form-result';
+  document.getElementById('noResultado').textContent = '';
+  abrirModal('modalNovaOS');
+});
+document.getElementById('formNovaOS').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.querySelector('#formNovaOS button[type=submit]');
+  var res = document.getElementById('noResultado');
+  botaoLoading(btn, true);
+  API.criarOrdem({
+    clienteEmail: document.getElementById('noEmail').value.trim(),
+    nome: document.getElementById('noNome').value.trim(),
+    telefone: document.getElementById('noTel').value.trim(),
+    aparelho: document.getElementById('noAparelho').value.trim(),
+    servico: document.getElementById('noServico').value,
+    status: document.getElementById('noStatus').value,
+    valor: document.getElementById('noValor').value.trim() || 'Sob consulta',
+    descricao: document.getElementById('noDesc').value.trim(),
+    garantia: document.getElementById('noGarantia').value.trim()
+  }).then(function (r) {
+    botaoLoading(btn, false);
+    res.className = 'form-result ' + (r.sucesso ? 'ok' : 'err');
+    if (r.sucesso) {
+      res.innerHTML = 'OS <strong>' + r.dado.numero + '</strong> criada com sucesso.'
+        + (r.dado.clienteCriado ? '<br>Cliente novo criado — senha inicial <strong>' + r.dado.senhaPadrao + '</strong>. Informe-o para entrar na Área do cliente.' : '');
+      setTimeout(function () { fecharModal('modalNovaOS'); }, 1400);
+      renderOrdens(); if (typeof carregarDashboard === 'function') carregarDashboard();
+    } else res.textContent = '⚠ ' + r.erro;
+  });
+});
+document.getElementById('noCancelar').addEventListener('click', function () { fecharModal('modalNovaOS'); });
+
+// ---------- Vídeos ----------
+function renderVideos() {
+  API.listarServicos().then(function (r) {
+    document.getElementById('tblVideos').innerHTML = r.dado.map(function (s) {
+      return '<tr>' +
+        '<td><strong>' + s.nome + '</strong><br><span class="small">' + s.video.tag + '</span></td>' +
+        '<td><input class="mini" id="vidTitulo_' + s.slug + '" value="' + s.video.titulo + '" style="min-width:200px"></td>' +
+        '<td><input class="mini" id="vidYt_' + s.slug + '" value="' + (s.video.youtubeId || '') + '" placeholder="Cole o ID do YouTube"></td>' +
+        '<td><span class="small text-muted">' + (s.video.arquivo || 'nenhum') + '</span></td>' +
+        '<td><button class="btn sm" data-salvar-video="' + s.slug + '">Salvar</button></td></tr>';
+    }).join('');
+    document.querySelectorAll('[data-salvar-video]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var slug = b.getAttribute('data-salvar-video');
+        API.salvarServico(slug, { video: {
+          titulo: document.getElementById('vidTitulo_' + slug).value,
+          youtubeId: document.getElementById('vidYt_' + slug).value.trim() || null,
+          arquivo: null,
+          tag: document.getElementById('vidYt_' + slug).value.trim() ? 'Vídeo publicado' : 'Vídeo em produção'
+        } }).then(function (r) {
+          if (r.sucesso) { toast('Vídeo salvo!', 'ok'); renderVideos(); }
+          else toast(r.erro, 'err');
+        });
+      });
+    });
+  });
+}
+
+// ---------- Boot ----------
+API.me().then(function (r) {
+  if (r.sucesso && r.dado.tipo === 'admin') {
+    estadoPainel(true);
+    document.getElementById('adChip').textContent = r.dado.nome.charAt(0).toUpperCase();
+    carregarDashboard();
+  } else {
+    estadoPainel(false);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Detalhes do serviço de assistência técnica de celular em Taubaté-SP.">
+<meta name="theme-color" content="#071016">
+<title>Serviço | Sempre On Celulares — Assistência técnica em Taubaté-SP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container navin">
+    <a class="logo" href="../index.html">SEMPRE<span>ON</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <div class="links" id="navLinks">
+      <a href="../index.html" data-page="inicio">Início</a>
+      <a href="../index.html#servicos">Serviços</a>
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#antes-depois">Antes e depois</a>
+      <a href="../index.html#avaliacoes">Avaliações</a>
+      <a href="../index.html#contato">Contato</a>
+      <a href="login.html" data-page="area-cliente">Área do cliente</a>
+    </div>
+    <a class="btn" href="#" data-wa="orcamento" data-servico-wa target="_blank" rel="noopener">Orçamento</a>
+  </div>
+</nav>
+
+<section style="padding-top:48px">
+  <div class="container">
+    <div class="breadcrumbs"><a href="../index.html">Início</a> / <a href="../index.html#servicos">Serviços</a> / <span id="bcNome">Serviço</span></div>
+
+    <div class="svc-head">
+      <div>
+        <div class="icon" id="svcIcon">▣</div>
+        <h1 style="font-size:clamp(28px,4vw,40px);letter-spacing:-1.5px;margin:16px 0 10px" id="svcNome">Serviço</h1>
+        <p class="text-muted" style="font-size:17px" id="svcResumo"></p>
+        <div id="svcErro" style="display:none" class="empty">
+          <div class="e-icon">🔍</div>Serviço não encontrado. <a href="../index.html#servicos">Voltar para os serviços</a>.
+        </div>
+      </div>
+      <div>
+        <div class="img-ph">
+          <img id="svcFoto" src="../assets/img/placeholder-servico.svg" alt="Foto ilustrativa do serviço">
+          <span>Imagem ilustrativa</span>
+        </div>
+        <div class="video-thumb mt-4" id="svcVideo" role="button" tabindex="0" aria-label="Assistir como é feito">
+          <img id="svcVideoImg" src="../assets/img/placeholder-video.svg" alt="Thumbnail do vídeo demonstrativo">
+          <div class="play">▶</div>
+          <div class="vlabel" id="svcVideoTitulo">Assistir como é feito</div>
+          <div class="vtag" id="svcVideoTag">Vídeo em produção</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-cards mt-4">
+      <div class="info-card"><div class="t">Prazo estimado</div><div class="v" id="svcPrazo">—</div></div>
+      <div class="info-card"><div class="t">Garantia</div><div class="v" id="svcGarantia">—</div></div>
+      <div class="info-card"><div class="t">Preço</div><div class="v" id="svcPreco">—</div></div>
+    </div>
+
+    <div class="grid two mt-4" style="align-items:start">
+      <div class="card reveal">
+        <h3>Problemas que o serviço resolve</h3>
+        <ul class="list-check" id="svcProblemas"></ul>
+      </div>
+      <div class="card reveal">
+        <h3>Como o serviço é realizado</h3>
+        <ul class="list-check" id="svcProcesso"></ul>
+      </div>
+    </div>
+
+    <div class="gap mt-4">
+      <a class="btn" id="btnOrcamento" href="orcamento.html">Solicitar orçamento</a>
+      <a class="btn ghost" id="btnWhats" href="#" target="_blank" rel="noopener">Orçamento no WhatsApp</a>
+    </div>
+
+    <div class="section-head mt-4" style="grid-column:1/-1">
+      <h2>Outros serviços</h2>
+    </div>
+    <div class="grid" id="outrosGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <span>© <span id="ano">2026</span> Sempre On Celulares · Assistência técnica · Taubaté-SP</span>
+    <div class="footer-links">
+      <a href="login.html">Área do cliente</a>
+      <a href="admin.html">Painel administrativo</a>
+    </div>
+  </div>
+</footer>
+
+<a class="btn float" href="#" data-wa="orcamento" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">WhatsApp</a>
+
+<div class="modal" id="modalVideo" role="dialog" aria-modal="true" aria-labelledby="modalVideoTitulo">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="modalVideoTitulo">Vídeo demonstrativo</h3><button class="modal-close" aria-label="Fechar">✕</button></div>
+    <div class="modal-body" id="modalVideoCorpo"></div>
+  </div>
+</div>
+
+<script src="../js/config.js"></script>
+<script src="../js/servicos.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+var slug = new URLSearchParams(location.search).get('s');
+
+function preenche(servico) {
+  document.title = servico.nome + ' em Taubaté-SP | Sempre On Celulares';
+  document.getElementById('bcNome').textContent = servico.nome;
+  document.getElementById('svcIcon').textContent = servico.icone;
+  document.getElementById('svcNome').textContent = servico.nome;
+  document.getElementById('svcResumo').textContent = servico.resumo;
+  document.getElementById('svcFoto').src = asset(servico.foto);
+  document.getElementById('svcFoto').alt = 'Foto ilustrativa — ' + servico.nome;
+  document.getElementById('svcPrazo').textContent = servico.prazo;
+  document.getElementById('svcGarantia').textContent = servico.garantia;
+  document.getElementById('svcPreco').textContent = servico.preco;
+  document.getElementById('svcProblemas').innerHTML = servico.problemas.map(function (p) { return '<li><b>✓</b> ' + p + '</li>'; }).join('');
+  document.getElementById('svcProcesso').innerHTML = servico.processo.map(function (p) { return '<li><b>›</b> ' + p + '</li>'; }).join('');
+  document.getElementById('svcVideoTitulo').textContent = servico.video.titulo;
+  document.getElementById('svcVideoTag').textContent = servico.video.tag;
+  document.getElementById('btnOrcamento').href = 'orcamento.html?s=' + servico.slug;
+  document.getElementById('btnWhats').href = waLink(MSGS.servico(servico.nome));
+  document.getElementById('svcVideo').addEventListener('click', function () { abrirVideoModal(servico); });
+  document.getElementById('svcVideo').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirVideoModal(servico); } });
+  document.querySelectorAll('[data-wa]').forEach(function (el) {
+    el.href = waLink(el.hasAttribute('data-servico-wa') ? MSGS.servico(servico.nome) : MSGS.orcamento());
+  });
+}
+
+API.listarServicos().then(function (r) {
+  var lista = r.sucesso ? r.dado : SERVICOS;
+  var servico = null;
+  for (var i = 0; i < lista.length; i++) { if (lista[i].slug === slug) servico = lista[i]; }
+  if (!servico) {
+    document.getElementById('svcErro').style.display = 'block';
+  } else {
+    preenche(servico);
+    var grid = document.getElementById('outrosGrid');
+    renderCardsServicos(lista.filter(function (s) { return s.slug !== servico.slug; }), grid);
+    initReveal(grid);
+    bindCardsServicos();
+  }
+});
+</script>
+</body>
+</html>

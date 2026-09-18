@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Área do cliente Sempre On: acompanhe o status do conserto do seu celular em Taubaté-SP.">
+<meta name="theme-color" content="#071016">
+<meta name="robots" content="noindex">
+<title>Área do cliente | Sempre On Celulares</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container navin">
+    <a class="logo" href="../index.html">SEMPRE<span>ON</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <div class="links" id="navLinks">
+      <a href="../index.html" data-page="inicio">Início</a>
+      <a href="../index.html#servicos">Serviços</a>
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#antes-depois">Antes e depois</a>
+      <a href="../index.html#avaliacoes">Avaliações</a>
+      <a href="../index.html#contato">Contato</a>
+      <a href="login.html" data-page="area-cliente">Área do cliente</a>
+    </div>
+    <a class="btn" href="#" data-wa="orcamento" target="_blank" rel="noopener">Orçamento</a>
+  </div>
+</nav>
+
+<section style="padding-top:44px">
+  <div class="container">
+    <div class="topbar" id="topbarCliente">
+      <div>
+        <div class="eyebrow">Área do cliente</div>
+        <h1 style="font-size:clamp(24px,3.6vw,32px);letter-spacing:-1px;margin-top:6px" id="saudacao">Olá!</h1>
+      </div>
+      <div class="gap">
+        <a href="orcamento.html" class="btn sm">Solicitar orçamento</a>
+        <button class="btn sm ghost" id="btnSair">Sair</button>
+      </div>
+    </div>
+
+    <div class="panel mt-4">
+      <div class="panel-head"><h2>Visão geral</h2></div>
+      <div class="dash-grid" id="dashCliente">
+        <div class="stat"><div class="spinner light" style="margin:6px 0"></div></div>
+        <div class="stat"><div class="spinner light" style="margin:6px 0"></div></div>
+        <div class="stat"><div class="spinner light" style="margin:6px 0"></div></div>
+        <div class="stat"><div class="spinner light" style="margin:6px 0"></div></div>
+      </div>
+    </div>
+
+    <div class="panel mt-4">
+      <div class="panel-head">
+        <h2>Serviços em andamento e histórico</h2>
+        <span class="badge gray">Demonstração</span>
+      </div>
+      <div id="ordensArea"></div>
+    </div>
+
+    <div class="panel mt-4">
+      <div class="panel-head"><h2>Garantias</h2></div>
+      <div id="garantiasArea"></div>
+    </div>
+
+    <div class="panel mt-4">
+      <div class="panel-head"><h2>Minha conta</h2></div>
+      <div class="tabs" id="contaTabs">
+        <button class="tab active" data-ctab="dados">Meus dados</button>
+        <button class="tab" data-ctab="email">Alterar e-mail</button>
+        <button class="tab" data-ctab="senha">Alterar senha</button>
+      </div>
+      <div class="tab-pane active" id="ctab-dados">
+        <div class="form-grid">
+          <div class="field"><label>Nome</label><div class="fake-input" id="pfNome">—</div></div>
+          <div class="field"><label>Telefone</label><div class="fake-input" id="pfTel">—</div></div>
+          <div class="field full"><label>E-mail</label><div class="fake-input" id="pfEmail">—</div></div>
+        </div>
+        <p class="hint" style="margin-top:12px">Seus dados ficam guardados com segurança no servidor e a sessão é mantida por cookie.</p>
+      </div>
+      <div class="tab-pane" id="ctab-email">
+        <form id="formEmail" novalidate>
+          <div class="field"><label>Senha atual</label><input type="password" id="ccSenha" autocomplete="current-password" required></div>
+          <div class="form-grid">
+            <div class="field"><label>Novo e-mail</label><input type="email" id="ccEmail" autocomplete="email" required></div>
+            <div class="field"><label>Confirmar novo e-mail</label><input type="email" id="ccEmail2" required></div>
+          </div>
+          <button class="btn" type="submit" id="btnEmail">Salvar e-mail</button>
+          <div class="form-result" id="ccResultado"></div>
+        </form>
+      </div>
+      <div class="tab-pane" id="ctab-senha">
+        <form id="formSenha" novalidate>
+          <div class="field"><label>Senha atual</label><input type="password" id="csAtual" autocomplete="current-password" required></div>
+          <div class="form-grid">
+            <div class="field"><label>Nova senha</label><input type="password" id="csNova" autocomplete="new-password" required placeholder="Mínimo 6 caracteres"></div>
+            <div class="field"><label>Confirmar nova senha</label><input type="password" id="csConf" autocomplete="new-password" required></div>
+          </div>
+          <button class="btn" type="submit" id="btnSenha">Salvar senha</button>
+          <div class="form-result" id="csResultado"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <span>© <span id="ano">2026</span> Sempre On Celulares · Assistência técnica · Taubaté-SP</span>
+    <div class="footer-links"><a href="../index.html">Início</a><a href="admin.html">Painel administrativo</a></div>
+  </div>
+</footer>
+
+<a class="btn float" href="#" data-wa="orcamento" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">WhatsApp</a>
+
+<script src="../js/config.js"></script>
+<script src="../js/servicos.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+document.querySelectorAll('[data-wa]').forEach(function (el) { el.href = waLink(MSGS.orcamento()); });
+
+function nomeServico(slug) {
+  var s = buscarServico(slug);
+  return s ? s.nome : slug;
+}
+
+function cardsOrdens(ordens) {
+  if (!ordens.length) {
+    return '<div class="empty"><div class="e-icon">📭</div>Nenhuma ordem de serviço encontrada para esta conta.<br><span class="small">Quando você contratar um serviço, ele aparecerá aqui.</span></div>';
+  }
+  return '<div class="table-wrap"><table><thead><tr><th>Ordem</th><th>Aparelho</th><th>Serviço</th><th>Entrada</th><th>Status</th><th></th></tr></thead><tbody>' +
+    ordens.map(function (o) {
+      return '<tr>' +
+        '<td class="mono">' + o.numero + '</td>' +
+        '<td>' + o.aparelho + '</td>' +
+        '<td>' + nomeServico(o.servico) + '</td>' +
+        '<td>' + o.dataEntrada + '</td>' +
+        '<td>' + pillStatus(o.status) + '</td>' +
+        '<td><a class="link-more" style="margin:0" href="os-detalhe.html?os=' + o.numero + '">Acompanhar →</a></td>' +
+        '</tr>';
+    }).join('') + '</tbody></table></div>';
+}
+
+API.me().then(function (rSessao) {
+  if (!rSessao.sucesso) { window.location.href = 'login.html'; return; }
+  var sessao = rSessao.dado;
+  document.getElementById('saudacao').textContent = 'Olá, ' + sessao.nome + '!';
+  document.getElementById('pfNome').textContent = sessao.nome;
+  document.getElementById('pfTel').textContent = sessao.telefone || '—';
+  document.getElementById('pfEmail').textContent = sessao.email;
+
+  API.ordensDoCliente(sessao.email).then(function (r) {
+    var ordens = r.sucesso ? r.dado : [];
+    var box = document.getElementById('ordensArea');
+    box.innerHTML = cardsOrdens(ordens);
+
+    var emAndamento = 0, prontas = 0, garantias = 0;
+    ordens.forEach(function (o) {
+      if (o.status === 'entregue') return;
+      emAndamento++;
+      if (o.status === 'pronto') prontas++;
+      if (o.garantia && o.garantia.indexOf('Sim') === 0) garantias++;
+    });
+
+    document.getElementById('dashCliente').innerHTML =
+      '<div class="stat"><div class="num">' + ordens.length + '</div><div class="lbl">Ordens de serviço</div></div>' +
+      '<div class="stat"><div class="num">' + emAndamento + '</div><div class="lbl">Em andamento</div></div>' +
+      '<div class="stat"><div class="num">' + prontas + '</div><div class="lbl">Prontos para retirada</div></div>' +
+      '<div class="stat"><div class="num">' + garantias + '</div><div class="lbl">Garantias ativas</div></div>';
+
+    var ga = document.getElementById('garantiasArea');
+    var comGarantia = ordens.filter(function (o) { return o.garantia && o.garantia.indexOf('Sim') === 0; });
+    ga.innerHTML = comGarantia.length
+      ? cardsOrdens(comGarantia)
+      : '<div class="empty"><div class="e-icon">🛡️</div>Nenhuma garantia ativa para esta conta.</div>';
+
+    if (r.erro) toast(r.erro, 'info');
+  });
+});
+
+document.getElementById('btnSair').addEventListener('click', function () {
+  API.sair().then(function () {
+    toast('Você saiu da conta.', 'info');
+    setTimeout(function () { window.location.href = 'login.html'; }, 500);
+  });
+});
+
+// ---------- Abas da conta ----------
+document.querySelectorAll('#contaTabs .tab').forEach(function (el) {
+  el.addEventListener('click', function () {
+    var nome = el.getAttribute('data-ctab');
+    document.querySelectorAll('#contaTabs .tab').forEach(function (t) { t.classList.toggle('active', t === el); });
+    ['ctab-dados', 'ctab-email', 'ctab-senha'].forEach(function (p) { document.getElementById(p).classList.toggle('active', p === 'ctab-' + nome); });
+  });
+});
+
+function mostrarResultado(id, cls, texto) {
+  var r = document.getElementById(id);
+  r.className = 'form-result ' + cls;
+  r.innerHTML = texto;
+}
+
+document.getElementById('formEmail').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnEmail');
+  var novo = document.getElementById('ccEmail').value.trim();
+  var conf = document.getElementById('ccEmail2').value.trim();
+  if (!/^\S+@\S+\.\S+$/.test(novo)) { mostrarResultado('ccResultado', 'err', '⚠ Informe um e-mail válido.'); return; }
+  if (novo !== conf) { mostrarResultado('ccResultado', 'err', '⚠ Os e-mails não conferem.'); return; }
+  botaoLoading(btn, true);
+  API.alterarEmail({ senhaAtual: document.getElementById('ccSenha').value, novoEmail: novo }).then(function (r) {
+    botaoLoading(btn, false);
+    if (r.sucesso) {
+      document.getElementById('pfEmail').textContent = novo;
+      document.getElementById('ccSenha').value = '';
+      document.getElementById('ccEmail').value = '';
+      document.getElementById('ccEmail2').value = '';
+      mostrarResultado('ccResultado', 'ok', '✅ E-mail atualizado para <strong>' + novo + '</strong>. Use-o no próximo login.');
+    } else mostrarResultado('ccResultado', 'err', '⚠ ' + r.erro);
+  });
+});
+
+document.getElementById('formSenha').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnSenha');
+  var nova = document.getElementById('csNova').value;
+  var conf = document.getElementById('csConf').value;
+  if (nova.length < 6) { mostrarResultado('csResultado', 'err', '⚠ A nova senha precisa ter pelo menos 6 caracteres.'); return; }
+  if (nova !== conf) { mostrarResultado('csResultado', 'err', '⚠ A confirmação de senha não confere.'); return; }
+  botaoLoading(btn, true);
+  API.alterarSenha({ senhaAtual: document.getElementById('csAtual').value, novaSenha: nova, confirmacao: conf }).then(function (r) {
+    botaoLoading(btn, false);
+    if (r.sucesso) {
+      document.getElementById('csAtual').value = '';
+      document.getElementById('csNova').value = '';
+      document.getElementById('csConf').value = '';
+      mostrarResultado('csResultado', 'ok', '✅ Senha alterada com sucesso!');
+      toast('Senha alterada com sucesso.', 'ok');
+    } else mostrarResultado('csResultado', 'err', '⚠ ' + r.erro);
+  });
+});
+</script>
+</body>
+</html>

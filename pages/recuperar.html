@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Recupere o acesso à sua conta da Sempre On Celulares em Taubaté-SP.">
+<meta name="theme-color" content="#071016">
+<title>Recuperar acesso | Sempre On Celulares</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container navin">
+    <a class="logo" href="../index.html">SEMPRE<span>ON</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <div class="links" id="navLinks">
+      <a href="../index.html" data-page="inicio">Início</a>
+      <a href="../index.html#servicos">Serviços</a>
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#antes-depois">Antes e depois</a>
+      <a href="../index.html#avaliacoes">Avaliações</a>
+      <a href="../index.html#contato">Contato</a>
+      <a href="login.html" data-page="area-cliente">Área do cliente</a>
+    </div>
+    <a class="btn" href="#" data-wa="orcamento" target="_blank" rel="noopener">Orçamento</a>
+  </div>
+</nav>
+
+<div class="container auth-wrap">
+  <div class="auth-card">
+    <div class="eyebrow">Área do cliente</div>
+    <h1>Recuperar acesso</h1>
+    <p class="sub">Informe o e-mail cadastrado e enviaremos as instruções para redefinir sua senha.</p>
+
+    <form id="formRecuperar" novalidate>
+      <div class="field"><label for="rcEmail">E-mail</label><input id="rcEmail" type="email" required placeholder="voce@email.com"></div>
+      <button class="btn" style="width:100%" type="submit" id="btnRecuperar">Enviar instruções</button>
+    </form>
+
+    <div class="demo-hint">
+      📧 <strong>Modo demonstração:</strong> o disparo de e-mail acontecerá no back-end (ver <code>js/api.js → API.recuperarSenha</code>). Aqui apenas validamos a interface.
+    </div>
+
+    <div class="form-result" id="rcResultado"></div>
+
+    <div class="mt-4" style="text-align:center">
+      <a href="login.html" class="link-more" style="margin:0">Voltar para o login</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-grid">
+    <span>© <span id="ano">2026</span> Sempre On Celulares · Assistência técnica · Taubaté-SP</span>
+    <div class="footer-links"><a href="../index.html">Início</a><a href="admin.html">Painel administrativo</a></div>
+  </div>
+</footer>
+
+<a class="btn float" href="#" data-wa="orcamento" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">WhatsApp</a>
+
+<script src="../js/config.js"></script>
+<script src="../js/servicos.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+document.querySelectorAll('[data-wa]').forEach(function (el) { el.href = waLink(MSGS.orcamento()); });
+
+document.getElementById('formRecuperar').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnRecuperar');
+  var email = document.getElementById('rcEmail').value.trim();
+  botaoLoading(btn, true);
+  API.recuperarSenha(email).then(function (r) {
+    botaoLoading(btn, false);
+    var res = document.getElementById('rcResultado');
+    if (r.sucesso) {
+      res.className = 'form-result ok';
+      res.innerHTML = '✅ Pronto! Se existir uma conta para <strong>' + r.dado.email + '</strong>, enviaremos as instruções de redefinição.';
+      toast('Instruções enviadas.', 'ok');
+    } else {
+      res.className = 'form-result err';
+      res.textContent = '⚠ ' + r.erro;
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Vídeo demonstrativo em produção">
+  <rect width="800" height="450" fill="#0d1a21"/>
+  <rect x="20" y="20" width="760" height="410" rx="18" fill="none" stroke="#1d3540" stroke-dasharray="10 8"/>
+  <circle cx="400" cy="205" r="70" fill="#27e0a1" opacity=".12"/>
+  <circle cx="400" cy="205" r="70" fill="none" stroke="#27e0a1" stroke-width="3"/>
+  <polygon points="385,175 385,235 440,205" fill="#27e0a1"/>
+  <text x="400" y="300" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="700" fill="#f4f7f8">Vídeo em produção</text>
+  <text x="400" y="332" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="15" fill="#a8b6bc">Assim que publicado, aparecerá aqui</text>
+</svg>

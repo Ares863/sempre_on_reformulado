@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Entre na área do cliente da Sempre On Celulares para acompanhar sua ordem de serviço em Taubaté-SP.">
+<meta name="theme-color" content="#071016">
+<title>Login | Sempre On Celulares — Área do cliente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container navin">
+    <a class="logo" href="../index.html">SEMPRE<span>ON</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <div class="links" id="navLinks">
+      <a href="../index.html" data-page="inicio">Início</a>
+      <a href="../index.html#servicos">Serviços</a>
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#antes-depois">Antes e depois</a>
+      <a href="../index.html#avaliacoes">Avaliações</a>
+      <a href="../index.html#contato">Contato</a>
+      <a href="login.html" data-page="area-cliente">Área do cliente</a>
+    </div>
+    <a class="btn" href="#" data-wa="orcamento" target="_blank" rel="noopener">Orçamento</a>
+  </div>
+</nav>
+
+<div class="container auth-wrap">
+  <div class="auth-card">
+    <div class="eyebrow">Área do cliente</div>
+    <h1>Entrar</h1>
+    <p class="sub">Acompanhe sua ordem de serviço, orçamentos, histórico e garantia.</p>
+
+    <div class="tabs" id="loginTabs">
+      <button class="tab active" data-ltab="login">Entrar</button>
+      <button class="tab" data-ltab="senha">Trocar senha</button>
+      <button class="tab" data-ltab="email">Trocar e-mail</button>
+    </div>
+
+    <div class="tab-pane active" id="ltab-login">
+      <form id="formLogin" novalidate>
+        <div class="field"><label for="lgEmail">E-mail</label><input id="lgEmail" type="email" required placeholder="voce@email.com" autocomplete="email"></div>
+        <div class="field"><label for="lgSenha">Senha</label><input id="lgSenha" type="password" required placeholder="••••••••" autocomplete="current-password"></div>
+        <button class="btn" style="width:100%" type="submit" id="btnLogin">Entrar</button>
+      </form>
+
+      <div class="demo-hint">
+        💡 <strong>Dica de teste:</strong> com o servidor rodando (<code>node server.js</code>), use <code>admin@sempreon.com.br</code> ou <code>camila@exemplo.com</code> — veja as senhas no terminal. Sem o servidor, o site entra em modo demonstração (Ver <code>js/api.js</code>).
+      </div>
+
+      <div class="form-result" id="lgResultado"></div>
+
+      <div class="mt-4" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:14px">
+        <a href="cadastro.html" class="link-more" style="margin:0">Criar conta</a>
+        <a href="recuperar.html" class="link-more" style="margin:0">Esqueci minha senha</a>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="ltab-senha">
+      <p class="hint">Troque a senha da sua conta (cliente ou admin). É necessário informar o e-mail e a senha atual.</p>
+      <form id="formRs" novalidate>
+        <div class="field"><label for="rsEmail">E-mail da conta</label><input id="rsEmail" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="rsAtual">Senha atual</label><input id="rsAtual" type="password" required autocomplete="current-password"></div>
+        <div class="form-grid">
+          <div class="field" style="margin-bottom:0"><label for="rsNova">Nova senha</label><input id="rsNova" type="password" required autocomplete="new-password" placeholder="Mínimo 6 caracteres"></div>
+          <div class="field" style="margin-bottom:0"><label for="rsConf">Confirmar nova senha</label><input id="rsConf" type="password" required autocomplete="new-password"></div>
+        </div>
+        <button class="btn" style="width:100%" type="submit" id="btnRs">Trocar senha</button>
+      </form>
+      <div class="form-result" id="rsResultado"></div>
+    </div>
+
+    <div class="tab-pane" id="ltab-email">
+      <p class="hint">Troque o e-mail da sua conta (cliente ou admin). É necessário informar o e-mail e a senha atuais.</p>
+      <form id="formRe" novalidate>
+        <div class="field"><label for="reEmail">E-mail atual</label><input id="reEmail" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="reAtual">Senha atual</label><input id="reAtual" type="password" required autocomplete="current-password"></div>
+        <div class="form-grid">
+          <div class="field" style="margin-bottom:0"><label for="reNovo">Novo e-mail</label><input id="reNovo" type="email" required></div>
+          <div class="field" style="margin-bottom:0"><label for="reConf">Confirmar novo e-mail</label><input id="reConf" type="email" required></div>
+        </div>
+        <button class="btn" style="width:100%" type="submit" id="btnRe">Trocar e-mail</button>
+      </form>
+      <div class="form-result" id="reResultado"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-grid">
+    <span>© <span id="ano">2026</span> Sempre On Celulares · Assistência técnica · Taubaté-SP</span>
+    <div class="footer-links"><a href="../index.html">Início</a><a href="admin.html">Painel administrativo</a></div>
+  </div>
+</footer>
+
+<a class="btn float" href="#" data-wa="orcamento" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">WhatsApp</a>
+
+<script src="../js/config.js"></script>
+<script src="../js/servicos.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+document.querySelectorAll('[data-wa]').forEach(function (el) { el.href = waLink(MSGS.orcamento()); });
+
+// Abas: Entrar / Trocar senha / Trocar e-mail
+document.querySelectorAll('#loginTabs .tab').forEach(function (el) {
+  el.addEventListener('click', function () {
+    var nome = el.getAttribute('data-ltab');
+    document.querySelectorAll('#loginTabs .tab').forEach(function (t) { t.classList.toggle('active', t === el); });
+    ['ltab-login', 'ltab-senha', 'ltab-email'].forEach(function (p) { document.getElementById(p).classList.toggle('active', p === 'ltab-' + nome); });
+  });
+});
+
+function resultado(id, cls, html) {
+  var r = document.getElementById(id);
+  r.className = 'form-result ' + cls;
+  r.innerHTML = html;
+}
+
+document.getElementById('formLogin').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnLogin');
+  var email = document.getElementById('lgEmail').value.trim().toLowerCase();
+  var senha = document.getElementById('lgSenha').value;
+  botaoLoading(btn, true);
+  API.login(email, senha).then(function (r) {
+    botaoLoading(btn, false);
+    if (r.sucesso) {
+      resultado('lgResultado', 'ok', '✅ Bem-vindo(a), ' + r.dado.nome + '! Redirecionando...');
+      setTimeout(function () {
+        window.location.href = (r.dado.tipo === 'admin') ? 'admin.html' : 'area-cliente.html';
+      }, 700);
+    } else {
+      resultado('lgResultado', 'err', '⚠ ' + r.erro);
+    }
+  });
+});
+
+document.getElementById('formRs').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnRs');
+  var nova = document.getElementById('rsNova').value;
+  var conf = document.getElementById('rsConf').value;
+  if (nova.length < 6) { resultado('rsResultado', 'err', '⚠ A nova senha precisa ter pelo menos 6 caracteres.'); return; }
+  if (nova !== conf) { resultado('rsResultado', 'err', '⚠ A confirmação de senha não confere.'); return; }
+  botaoLoading(btn, true);
+  API.redefinirSenha({
+    email: document.getElementById('rsEmail').value.trim(),
+    senhaAtual: document.getElementById('rsAtual').value,
+    novaSenha: nova,
+    confirmacao: conf
+  }).then(function (r) {
+    botaoLoading(btn, false);
+    if (r.sucesso) {
+      resultado('rsResultado', 'ok', '✅ Senha trocada com sucesso! Você já pode entrar com a nova senha.');
+      document.getElementById('formRs').reset();
+    } else resultado('rsResultado', 'err', '⚠ ' + r.erro);
+  });
+});
+
+document.getElementById('formRe').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnRe');
+  var novo = document.getElementById('reNovo').value.trim();
+  var conf = document.getElementById('reConf').value.trim();
+  if (!/^\S+@\S+\.\S+$/.test(novo)) { resultado('reResultado', 'err', '⚠ Informe um e-mail válido.'); return; }
+  if (novo !== conf) { resultado('reResultado', 'err', '⚠ Os e-mails não conferem.'); return; }
+  botaoLoading(btn, true);
+  API.redefinirEmail({
+    email: document.getElementById('reEmail').value.trim(),
+    senhaAtual: document.getElementById('reAtual').value,
+    novoEmail: novo
+  }).then(function (r) {
+    botaoLoading(btn, false);
+    if (r.sucesso) {
+      resultado('reResultado', 'ok', '✅ E-mail atualizado para <strong>' + novo + '</strong>. Use-o no próximo acesso.');
+      document.getElementById('formRe').reset();
+    } else resultado('reResultado', 'err', '⚠ ' + r.erro);
+  });
+});
+
+if (sessaoCliente()) { window.location.href = 'area-cliente.html'; }
+API.me().then(function (r) {
+  if (r.sucesso) {
+    window.location.href = (r.dado.tipo === 'admin') ? 'admin.html' : 'area-cliente.html';
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Crie sua conta na Sempre On Celulares e acompanhe o conserto do seu aparelho em Taubaté-SP.">
+<meta name="theme-color" content="#071016">
+<title>Cadastro | Sempre On Celulares — Área do cliente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container navin">
+    <a class="logo" href="../index.html">SEMPRE<span>ON</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <div class="links" id="navLinks">
+      <a href="../index.html" data-page="inicio">Início</a>
+      <a href="../index.html#servicos">Serviços</a>
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#antes-depois">Antes e depois</a>
+      <a href="../index.html#avaliacoes">Avaliações</a>
+      <a href="../index.html#contato">Contato</a>
+      <a href="login.html" data-page="area-cliente">Área do cliente</a>
+    </div>
+    <a class="btn" href="#" data-wa="orcamento" target="_blank" rel="noopener">Orçamento</a>
+  </div>
+</nav>
+
+<div class="container auth-wrap">
+  <div class="auth-card">
+    <div class="eyebrow">Área do cliente</div>
+    <h1>Criar conta</h1>
+    <p class="sub">Cadastre-se para acompanhar o reparo do seu aparelho passo a passo.</p>
+
+    <form id="formCadastro" novalidate>
+      <div class="field"><label for="cdNome">Nome</label><input id="cdNome" type="text" required placeholder="Seu nome"></div>
+      <div class="field"><label for="cdEmail">E-mail</label><input id="cdEmail" type="email" required placeholder="voce@email.com"></div>
+      <div class="field"><label for="cdTel">Telefone</label><input id="cdTel" type="tel" required placeholder="(12) 90000-0000"></div>
+      <div class="field"><label for="cdSenha">Senha</label><input id="cdSenha" type="password" required placeholder="Mínimo 6 caracteres"></div>
+      <div class="field"><label for="cdConf">Confirmação de senha</label><input id="cdConf" type="password" required placeholder="Repita a senha"></div>
+      <button class="btn" style="width:100%" type="submit" id="btnCadastro">Criar minha conta</button>
+    </form>
+
+<div class="demo-hint">
+  🔒 <strong>Privacidade:</strong> a senha nunca é salva no navegador — ela é convertida em hash no servidor (scrypt) e guardada no banco <code>data/sempreon.db</code>.
+</div>
+
+    <div class="form-result" id="cdResultado"></div>
+
+    <div class="mt-4" style="text-align:center">
+      <a href="login.html" class="link-more" style="margin:0">Já tenho conta — entrar</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-grid">
+    <span>© <span id="ano">2026</span> Sempre On Celulares · Assistência técnica · Taubaté-SP</span>
+    <div class="footer-links"><a href="../index.html">Início</a><a href="admin.html">Painel administrativo</a></div>
+  </div>
+</footer>
+
+<a class="btn float" href="#" data-wa="orcamento" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">WhatsApp</a>
+
+<script src="../js/config.js"></script>
+<script src="../js/servicos.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+document.querySelectorAll('[data-wa]').forEach(function (el) { el.href = waLink(MSGS.orcamento()); });
+if (sessaoCliente()) { window.location.href = 'area-cliente.html'; }
+API.me().then(function (r) { if (r.sucesso && r.dado.tipo !== 'admin') window.location.href = 'area-cliente.html'; });
+
+document.getElementById('formCadastro').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnCadastro');
+  botaoLoading(btn, true);
+  API.cadastrar({
+    nome: document.getElementById('cdNome').value,
+    email: document.getElementById('cdEmail').value.trim().toLowerCase(),
+    telefone: document.getElementById('cdTel').value,
+    senha: document.getElementById('cdSenha').value,
+    confirmacao: document.getElementById('cdConf').value
+  }).then(function (r) {
+    botaoLoading(btn, false);
+    var res = document.getElementById('cdResultado');
+    if (r.sucesso) {
+      res.className = 'form-result ok';
+      res.innerHTML = '✅ Conta criada (demonstração). Bem-vindo(a), ' + r.dado.nome + '! Redirecionando...';
+      setTimeout(function () { window.location.href = 'area-cliente.html'; }, 900);
+    } else {
+      res.className = 'form-result err';
+      res.textContent = '⚠ ' + r.erro;
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Solicite um orçamento de conserto de celular em Taubaté-SP. Envie os dados do seu aparelho e receba uma proposta rápida.">
+<meta name="theme-color" content="#071016">
+<title>Orçamento | Sempre On Celulares — Taubaté-SP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container navin">
+    <a class="logo" href="../index.html">SEMPRE<span>ON</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <div class="links" id="navLinks">
+      <a href="../index.html" data-page="inicio">Início</a>
+      <a href="../index.html#servicos">Serviços</a>
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#antes-depois">Antes e depois</a>
+      <a href="../index.html#avaliacoes">Avaliações</a>
+      <a href="../index.html#contato">Contato</a>
+      <a href="login.html" data-page="area-cliente">Área do cliente</a>
+    </div>
+    <a class="btn" href="#" data-wa="orcamento" target="_blank" rel="noopener">Orçamento</a>
+  </div>
+</nav>
+
+<section style="padding-top:48px">
+  <div class="container" style="max-width:720px">
+    <div class="breadcrumbs"><a href="../index.html">Início</a> / <span>Orçamento</span></div>
+    <div class="section-head">
+      <div class="eyebrow">Orçamento</div>
+      <h1>Solicite um orçamento.</h1>
+      <p>Preencha os dados abaixo e envie. Assim que o diagnóstico for feito, retornamos com a proposta. Também aceitamos orçamentos pelo WhatsApp, se preferir.</p>
+    </div>
+
+    <div class="panel">
+      <form id="formOrcamento" novalidate>
+        <div class="form-grid">
+          <div class="field"><label for="orNome">Nome</label><input id="orNome" name="nome" type="text" required placeholder="Seu nome"></div>
+          <div class="field"><label for="orTel">Telefone</label><input id="orTel" name="telefone" type="tel" required placeholder="(12) 90000-0000"></div>
+          <div class="field full"><label for="orModelo">Modelo do aparelho</label><input id="orModelo" name="modelo" type="text" required placeholder="Ex.: iPhone 13, Samsung Galaxy S22"></div>
+          <div class="field full">
+            <label for="orServico">Serviço desejado</label>
+            <select id="orServico" name="servico"><option value="">Escolha o serviço (opcional)</option></select>
+          </div>
+          <div class="field full"><label for="orDesc">Descrição do problema</label><textarea id="orDesc" name="descricao" placeholder="Descreva o que está acontecendo com o aparelho"></textarea></div>
+          <div class="field full">
+            <label>Fotos do aparelho (opcional)</label>
+            <div class="upload" id="orUpload"><div>📷 <strong>Clique para anexar fotos</strong> <span class="badge warn">até 4</span></div><div class="hint" style="margin-top:4px">As fotos são compactadas e enviadas para o servidor junto com a solicitação.</div><input type="file" id="orFotos" accept="image/*" multiple></div>
+            <div class="upload-preview" id="orPreview"></div>
+          </div>
+          <div class="field full">
+            <label for="orContato">Forma preferencial de contato</label>
+            <select id="orContato" name="contato">
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Telefone">Telefone</option>
+              <option value="Instagram">Instagram</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex-between mt-3">
+          <button class="btn" type="submit" id="btnEnviar">Enviar solicitação</button>
+          <a class="btn ghost" href="#" id="btnWaFallback" target="_blank" rel="noopener">Prefiro falar no WhatsApp</a>
+        </div>
+      </form>
+      <div class="form-result" id="orResultado"></div>
+    </div>
+
+    <div class="panel mt-4">
+      <h2 style="font-size:18px">E como funciona o orçamento?</h2>
+      <ul class="list-check">
+        <li><b>1</b> Você envia a solicitação</li>
+        <li><b>2</b> O aparelho passa pelo diagnóstico</li>
+        <li><b>3</b> Você recebe valor e prazo para aprovar</li>
+        <li><b>4</b> Depois da aprovação, o reparo é realizado</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <span>© <span id="ano">2026</span> Sempre On Celulares · Assistência técnica · Taubaté-SP</span>
+    <div class="footer-links">
+      <a href="login.html">Área do cliente</a>
+      <a href="admin.html">Painel administrativo</a>
+    </div>
+  </div>
+</footer>
+
+<a class="btn float" href="#" data-wa="orcamento" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">WhatsApp</a>
+
+<script src="../js/config.js"></script>
+<script src="../js/servicos.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+var param = new URLSearchParams(location.search).get('s');
+var select = document.getElementById('orServico');
+SERVICOS.forEach(function (s) {
+  var op = document.createElement('option');
+  op.value = s.nome;
+  op.textContent = s.nome;
+  select.appendChild(op);
+});
+if (param) {
+  var sv = buscarServico(param);
+  if (sv) select.value = sv.nome;
+}
+
+// Botões de WhatsApp por contexto
+document.querySelectorAll('[data-wa]').forEach(function (el) { el.href = waLink(MSGS.orcamento()); });
+document.getElementById('btnWaFallback').href = waLink(MSGS.orcamento());
+
+// Fotos: leitura, compactação e preview (envio real para o servidor)
+var fotos = [];
+function lerECompactar(arquivo) {
+  return new Promise(function (resolve) {
+    var leitor = new FileReader();
+    leitor.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var max = 1000, escala = Math.min(1, max / Math.max(img.width, img.height));
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(img.width * escala));
+        canvas.height = Math.max(1, Math.round(img.height * escala));
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve({ nome: arquivo.name, dados: canvas.toDataURL('image/jpeg', 0.72) });
+      };
+      img.onerror = function () { resolve({ nome: arquivo.name, dados: null }); };
+      img.src = leitor.result;
+    };
+    leitor.readAsDataURL(arquivo);
+  });
+}
+document.getElementById('orUpload').addEventListener('click', function () { document.getElementById('orFotos').click(); });
+document.getElementById('orFotos').addEventListener('change', function () {
+  var arquivos = Array.from(this.files).slice(0, 4);
+  var preview = document.getElementById('orPreview');
+  preview.innerHTML = '<span class="small text-muted">📎 Processando fotos... aguarde.</span>';
+  var promessa = Promise.resolve();
+  arquivos.forEach(function (arq, idx) {
+    promessa = promessa.then(function () {
+      return lerECompactar(arq).then(function (f) {
+        if (f.dados) fotos.push(f);
+        var imgEl = document.createElement('img');
+        imgEl.src = f.dados || (URL.createObjectURL(arq));
+        imgEl.alt = 'Foto ' + (idx + 1);
+        preview.appendChild(imgEl);
+      });
+    });
+  });
+  promessa.then(function () {
+    var restante = preview.querySelector('.small');
+    if (restante) restante.remove();
+    if (!fotos.length) preview.innerHTML = '<span class="small text-muted">Nenhuma imagem válida.</span>';
+  });
+});
+
+// Monta mensagem de WhatsApp com os dados do formulário
+function resumoWhats() {
+  return 'Olá! Gostaria de solicitar um orçamento.\n\n' +
+    'Nome: ' + (document.getElementById('orNome').value || '—') + '\n' +
+    'Telefone: ' + (document.getElementById('orTel').value || '—') + '\n' +
+    'Modelo: ' + (document.getElementById('orModelo').value || '—') + '\n' +
+    'Serviço: ' + (select.value || '—') + '\n' +
+    'Preferência de contato: ' + (document.getElementById('orContato').value || '—') + '\n' +
+    'Problema: ' + (document.getElementById('orDesc').value || '—');
+}
+
+// Envio
+document.getElementById('formOrcamento').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnEnviar');
+  botaoLoading(btn, true);
+  API.enviarOrcamento({
+    nome: document.getElementById('orNome').value,
+    telefone: document.getElementById('orTel').value,
+    modelo: document.getElementById('orModelo').value,
+    servico: select.value,
+    descricao: document.getElementById('orDesc').value,
+    contato: document.getElementById('orContato').value,
+    fotos: fotos
+  }).then(function (r) {
+    botaoLoading(btn, false);
+    var res = document.getElementById('orResultado');
+    if (r.sucesso) {
+      res.className = 'form-result ok';
+      res.innerHTML = '✅ Solicitação registrada (protocolo <strong>' + r.dado.protocolo + '</strong>)' +
+        (r.dado.fotos ? ' com <strong>' + r.dado.fotos + ' foto(s)</strong> enviada(s).' : '.') +
+        ' A loja já recebeu seus dados.';
+      document.getElementById('btnWaFallback').href = waLink(resumoWhats());
+      toast('Solicitação enviada com sucesso.', 'ok');
+    } else {
+      res.className = 'form-result err';
+      res.textContent = '⚠ ' + r.erro;
+    }
+  });
+});
+</script>
+</body>
+</html>

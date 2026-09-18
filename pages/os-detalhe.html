@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Acompanhe o status da sua ordem de serviço na Sempre On Celulares de Taubaté-SP.">
+<meta name="theme-color" content="#071016">
+<meta name="robots" content="noindex">
+<title>Ordem de serviço | Sempre On Celulares</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container navin">
+    <a class="logo" href="../index.html">SEMPRE<span>ON</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <div class="links" id="navLinks">
+      <a href="../index.html" data-page="inicio">Início</a>
+      <a href="../index.html#servicos">Serviços</a>
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#antes-depois">Antes e depois</a>
+      <a href="../index.html#avaliacoes">Avaliações</a>
+      <a href="../index.html#contato">Contato</a>
+      <a href="login.html" data-page="area-cliente">Área do cliente</a>
+    </div>
+    <a class="btn" href="#" data-wa="orcamento" target="_blank" rel="noopener">Orçamento</a>
+  </div>
+</nav>
+
+<section style="padding-top:44px">
+  <div class="container">
+    <div class="breadcrumbs"><a href="area-cliente.html">Área do cliente</a> / <span id="osNumeroBc">Ordem de serviço</span></div>
+
+    <div id="osErro" style="display:none" class="empty">
+      <div class="e-icon">🔍</div>Ordem de serviço não encontrada.<br>
+      <a href="area-cliente.html" class="link-more" style="margin-top:10px">Voltar para a área do cliente →</a>
+    </div>
+
+    <div id="osConteudo" style="display:none">
+      <div class="os-hero">
+        <div>
+          <h1 id="osNumero">OS-0000</h1>
+          <p class="text-muted" id="osData">—</p>
+        </div>
+        <div style="text-align:right"><div class="small text-muted">Status atual</div><div id="osStatus" class="mt-3" style="margin-top:6px">—</div></div>
+      </div>
+
+      <div class="panel mt-4">
+        <div class="panel-head"><h2>Etapas do serviço</h2></div>
+        <div class="etapas" id="osEtapas"></div>
+      </div>
+
+      <div class="grid two mt-4" style="align-items:start">
+        <div class="card">
+          <h3>Detalhes da ordem</h3>
+          <ul class="list-check" style="margin-top:14px">
+            <li><b>›</b> <span><span class="text-muted">Cliente:</span><br><strong id="osCliente">—</strong></span></li>
+            <li><b>›</b> <span><span class="text-muted">Aparelho:</span><br><strong id="osAparelho">—</strong></span></li>
+            <li><b>›</b> <span><span class="text-muted">Serviço:</span><br><strong id="osServico">—</strong></span></li>
+            <li><b>›</b> <span><span class="text-muted">Descrição do problema:</span><br><span id="osDesc">—</span></span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Orçamento e garantia</h3>
+          <ul class="list-check" style="margin-top:14px">
+            <li><b>›</b> <span><span class="text-muted">Valor orçado:</span><br><strong id="osValor">—</strong></span></li>
+            <li><b>›</b> <span><span class="text-muted">Garantia:</span><br><span id="osGarantia">—</span></span></li>
+            <li><b>›</b> <span><span class="text-muted">Entrada:</span><br><span id="osEntrada">—</span></span></li>
+          </ul>
+          <a class="btn mt-3" href="#" id="osWa" target="_blank" rel="noopener">Dúvidas? Fale no WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <span>© <span id="ano">2026</span> Sempre On Celulares · Assistência técnica · Taubaté-SP</span>
+    <div class="footer-links"><a href="../index.html">Início</a><a href="admin.html">Painel administrativo</a></div>
+  </div>
+</footer>
+
+<a class="btn float" href="#" data-wa="orcamento" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">WhatsApp</a>
+
+<script src="../js/config.js"></script>
+<script src="../js/servicos.js"></script>
+<script src="../js/dados.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+document.querySelectorAll('[data-wa]').forEach(function (el) { el.href = waLink(MSGS.orcamento()); });
+
+var numero = new URLSearchParams(location.search).get('os');
+
+API.buscarOrdem(numero).then(function (r) {
+  if (!r.sucesso) {
+    document.getElementById('osErro').style.display = 'block';
+    return;
+  }
+  var o = r.dado;
+  document.getElementById('osConteudo').style.display = 'block';
+  document.getElementById('osNumeroBc').textContent = o.numero;
+  document.getElementById('osNumero').textContent = o.numero;
+  document.getElementById('osData').textContent = 'Entrada em ' + o.dataEntrada;
+  document.getElementById('osStatus').innerHTML = pillStatus(o.status);
+  document.getElementById('osCliente').textContent = o.clienteNome;
+  document.getElementById('osAparelho').textContent = o.aparelho;
+  document.getElementById('osServico').textContent = nomeServico(o.servico);
+  document.getElementById('osDesc').textContent = o.descricao;
+  document.getElementById('osValor').textContent = o.valor;
+  document.getElementById('osGarantia').textContent = o.garantia;
+  document.getElementById('osEntrada').textContent = o.dataEntrada;
+  document.getElementById('osWa').href = waLink('Olá! Tenho uma dúvida sobre a ordem ' + o.numero + '.');
+
+  // Etapas: destaca as concluídas e a atual
+  var indiceAtual = STATUS_OPCOES.map(function (s) { return s.chave; }).indexOf(o.status);
+  var etapas = document.getElementById('osEtapas');
+  etapas.innerHTML = STATUS_OPCOES.map(function (s, i) {
+    var cls = i < indiceAtual ? 'done' : (i === indiceAtual ? 'current' : '');
+    return '<div class="etapa ' + cls + '" data-ic="' + s.icone + '" title="' + s.rotulo + '">' + s.rotulo + '</div>';
+  }).join('');
+});
+
+function nomeServico(slug) {
+  var s = buscarServico(slug);
+  return s ? s.nome : slug;
+}
+</script>
+</body>
+</html>

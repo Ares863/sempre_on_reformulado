@@ -1,0 +1,17 @@
+# Render blueprint — Sempre On Celulares (frontend + API + PostgreSQL/Neon)
+# Como usar: envie a pasta deste projeto para o GitHub e importe como
+# "Web Service" no Render (https://render.com). Selecione runtime Node.
+services:
+  - type: web
+    name: sempreon-celulares
+    runtime: node
+    plan: free
+    autoDeploy: true
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false

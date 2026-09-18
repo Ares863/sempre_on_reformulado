@@ -1,0 +1,17 @@
+{
+  "name": "sempre-on-site",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Sempre On Celulares — site institucional + painel com API REST (PostgreSQL/Neon)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "migrar": "node scripts/migrar-sqlite.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}

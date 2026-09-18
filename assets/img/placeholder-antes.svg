@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Aparelho antes do reparo">
+  <rect width="800" height="600" fill="#0d1a21"/>
+  <rect x="250" y="40" width="300" height="520" rx="40" fill="#10232c" stroke="#2c3f49" stroke-width="6"/>
+  <rect x="278" y="80" width="244" height="440" rx="20" fill="#071016"/>
+  <rect x="272" y="96" width="244" height="444" rx="18" fill="none" stroke="#0f1e26" stroke-width="2"/>
+  <path d="M300 260 L352 310 L300 372 L372 372" fill="none" stroke="#ff6b6b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+  <path d="M352 310 L420 236 L452 330 L400 340" fill="none" stroke="#ff6b6b" stroke-width="5" opacity=".7"/>
+  <path d="M330 470 L470 380 L490 430 L360 500" fill="none" stroke="#ffd166" stroke-width="5" opacity=".6"/>
+  <circle cx="400" cy="100" r="20" fill="#071016" stroke="#ff6b6b" stroke-width="3"/>
+  <text x="400" y="560" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#ff6b6b" letter-spacing="4">ANTES</text>
+  <text x="400" y="588" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="14" fill="#a8b6bc">Imagem ilustrativa</text>
+</svg>
