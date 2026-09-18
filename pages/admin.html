@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body class="pagina-cheia">
+<body class="pagina-cheia tela-fixa">
 
 <nav class="nav">
   <div class="container navin">
@@ -228,6 +228,8 @@ document.querySelectorAll('[data-tab]').forEach(function (el) {
 // ---------- Estado do painel ----------
 var ADMIN_ATUAL = null;
 function estadoPainel(mostrar) {
+  // logado: deixa a página rolar normalmente (painel é longo); deslogado: tela fixa
+  document.body.classList.toggle('tela-fixa', !mostrar);
   document.getElementById('adminLogin').style.display = mostrar ? 'none' : 'block';
   document.getElementById('adminPainel').style.display = mostrar ? 'block' : 'none';
 }
