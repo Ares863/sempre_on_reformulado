@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="pagina-cheia">
 
 <nav class="nav">
   <div class="container navin">
@@ -32,12 +32,12 @@
     <h1>Acesso restrito</h1>
     <p class="sub">Somente administradores da Sempre On podem acessar.</p>
     <form id="formAdminLogin" novalidate>
-      <div class="field"><label>E-mail do administrador</label><input id="adEmail" type="email" required value="admin@sempreon.com.br"></div>
-      <div class="field"><label>Senha</label><input id="adSenha" type="password" required placeholder="••••••••"></div>
+      <div class="field"><label>E-mail do administrador</label><input id="adEmail" type="email" required placeholder="admin@exemplo.com"><span class="hint">Coloque um e-mail válido que você se lembre facilmente.</span></div>
+      <div class="field"><label>Senha</label><input id="adSenha" type="password" required placeholder="••••••••"><span class="hint">Digite uma senha segura e que você vá se lembrar.</span></div>
       <button class="btn" style="width:100%" type="submit" id="btnAdminLogin">Entrar no painel</button>
     </form>
     <div class="demo-hint">
-      🔐 <strong>Dica de acesso:</strong> com o servidor rodando (<code>node server.js</code>), entre com <code>admin@sempreon.com.br</code> / <code>Admin@123</code>. Sem servidor, cai em modo demonstração.
+      🔐 <strong>Seus dados de acesso são armazenados com segurança no banco de dados.</strong> Insira suas credenciais registradas para acessar seu painel.
     </div>
     <div class="form-result" id="adResultado"></div>
   </div>

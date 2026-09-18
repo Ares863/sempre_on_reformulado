@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="pagina-cheia">
 
 <nav class="nav">
   <div class="container navin">
@@ -36,12 +36,12 @@
     <p class="sub">Informe o e-mail cadastrado e enviaremos as instruções para redefinir sua senha.</p>
 
     <form id="formRecuperar" novalidate>
-      <div class="field"><label for="rcEmail">E-mail</label><input id="rcEmail" type="email" required placeholder="voce@email.com"></div>
+      <div class="field"><label for="rcEmail">E-mail</label><input id="rcEmail" type="email" required placeholder="voce@email.com"><span class="hint">Coloque um e-mail válido que você se lembre facilmente.</span></div>
       <button class="btn" style="width:100%" type="submit" id="btnRecuperar">Enviar instruções</button>
     </form>
 
     <div class="demo-hint">
-      📧 <strong>Modo demonstração:</strong> o disparo de e-mail acontecerá no back-end (ver <code>js/api.js → API.recuperarSenha</code>). Aqui apenas validamos a interface.
+      📧 <strong>Enviaremos as instruções para o e-mail cadastrado.</strong> Confira também a caixa de spam ou lixo eletrônico.
     </div>
 
     <div class="form-result" id="rcResultado"></div>

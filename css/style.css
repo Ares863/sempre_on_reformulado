@@ -259,8 +259,8 @@ tbody tr:hover{background:rgba(255,255,255,.02)}
 /* Páginas de tela cheia: conteúdo cresce e o rodapé fica sempre no fim */
 body.pagina-cheia{min-height:100vh;display:flex;flex-direction:column}
 body.pagina-cheia .auth-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;width:100%}
-body.pagina-cheia>section{flex:1}
-body.pagina-cheia footer{margin-top:auto}
+body.pagina-cheia>section,body.pagina-cheia #adminPainel{flex:1}
+body.pagina-cheia footer{margin-top:auto;flex-shrink:0}
 .auth-wrap{max-width:440px;margin:0 auto;padding:40px 0}
 .auth-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px;box-shadow:var(--shadow)}
 .auth-card h1{font-size:24px;letter-spacing:-.8px;margin-bottom:4px}
