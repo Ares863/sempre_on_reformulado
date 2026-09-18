@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Painel administrativo da Sempre On Celulares — gerencie clientes, ordens de serviço e serviços.">
 <meta name="theme-color" content="#071016">
 <meta name="robots" content="noindex">
@@ -88,21 +88,21 @@
           <div class="tab-pane" id="pane-clientes">
             <div class="panel">
               <div class="panel-head"><h2>Clientes cadastrados</h2><span class="badge gray" id="badgeClientes">0</span></div>
-              <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Aparelhos</th><th>Desde</th></tr></thead><tbody id="tblClientes"></tbody></table></div>
+              <div class="table-wrap table-responsive"><table><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Aparelhos</th><th>Desde</th></tr></thead><tbody id="tblClientes"></tbody></table></div>
             </div>
           </div>
 
           <div class="tab-pane" id="pane-ordens">
             <div class="panel">
               <div class="panel-head"><h2>Ordens de serviço</h2><div class="gap"><span class="badge warn">Altere o status na coluna Status</span><button class="btn sm" id="btnNovaOS">＋ Nova OS</button></div></div>
-              <div class="table-wrap"><table><thead><tr><th>Ordem</th><th>Cliente</th><th>Aparelho</th><th>Serviço</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody id="tblOrdens"></tbody></table></div>
+              <div class="table-wrap table-responsive"><table><thead><tr><th>Ordem</th><th>Cliente</th><th>Aparelho</th><th>Serviço</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody id="tblOrdens"></tbody></table></div>
             </div>
           </div>
 
           <div class="tab-pane" id="pane-servicos">
             <div class="panel">
               <div class="panel-head"><h2>Serviços do catálogo</h2><span class="badge gray">Edição de demonstração</span></div>
-              <div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Preço</th><th>Prazo</th><th>Garantia</th><th>Ações</th></tr></thead><tbody id="tblServicos"></tbody></table></div>
+              <div class="table-wrap table-responsive"><table><thead><tr><th>Serviço</th><th>Preço</th><th>Prazo</th><th>Garantia</th><th>Ações</th></tr></thead><tbody id="tblServicos"></tbody></table></div>
             </div>
           </div>
 
@@ -113,7 +113,7 @@
                 <span class="badge gray">Estrutura para vídeos reais</span>
               </div>
               <p class="text-muted" style="margin-bottom:18px">Cole o ID do vídeo do YouTube (ex.: <strong>dQw4w9WgXcQ</strong>) para publicá-lo na página do serviço. Vídeos próprios (.mp4) poderão ser enviados quando o back-end estiver integrado.</p>
-              <div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Título do vídeo</th><th>ID do YouTube</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody id="tblVideos"></tbody></table></div>
+              <div class="table-wrap table-responsive"><table><thead><tr><th>Serviço</th><th>Título do vídeo</th><th>ID do YouTube</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody id="tblVideos"></tbody></table></div>
             </div>
           </div>
 
@@ -306,7 +306,7 @@ function tabelaOrdens(ordens, simplificado) {
       '<td>' + (simplificado ? pillStatus(o.status) : selectStatus(o.status)) + '</td>' +
       '</tr>';
   }).join('');
-  return '<div class="table-wrap"><table><thead><tr>' +
+  return '<div class="table-wrap table-responsive"><table><thead><tr>' +
     '<th>Ordem</th><th>Cliente</th><th>Aparelho</th><th>Serviço</th>' +
     (simplificado ? '' : '<th>Data</th><th>Valor</th>') +
     '<th>Status</th></tr></thead><tbody>' + linhas + '</tbody></table></div>';
