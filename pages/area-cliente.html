@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="pagina-cheia">
 
 <nav class="nav">
   <div class="container navin">
@@ -77,7 +77,7 @@
           <div class="form-grid">
             <div class="field"><label>Nome completo</label><input type="text" id="pfNome" autocomplete="name" required></div>
             <div class="field"><label>Telefone / WhatsApp</label><input type="tel" id="pfTel" autocomplete="tel" placeholder="(12) 99999-9999"></div>
-            <div class="field full"><label>E-mail</label><input type="email" id="pfEmail" autocomplete="email" required></div>
+            <div class="field full"><label>E-mail</label><input type="email" id="pfEmail" autocomplete="email" required><span class="hint">Coloque um e-mail válido que você se lembre facilmente.</span></div>
             <div class="field full"><label>Senha atual (para confirmar as alterações)</label><input type="password" id="pfSenha" autocomplete="current-password" required></div>
           </div>
           <button class="btn" type="submit" id="btnPerfil">Salvar dados</button>
@@ -89,7 +89,7 @@
         <form id="formSenha" novalidate>
           <div class="field"><label>Senha atual</label><input type="password" id="csAtual" autocomplete="current-password" required></div>
           <div class="form-grid">
-            <div class="field"><label>Nova senha</label><input type="password" id="csNova" autocomplete="new-password" required placeholder="Mínimo 6 caracteres"></div>
+            <div class="field"><label>Nova senha</label><input type="password" id="csNova" autocomplete="new-password" required placeholder="Mínimo 6 caracteres"><span class="hint">Digite uma senha segura e que você vá se lembrar.</span></div>
             <div class="field"><label>Confirmar nova senha</label><input type="password" id="csConf" autocomplete="new-password" required></div>
           </div>
           <button class="btn" type="submit" id="btnSenha">Salvar senha</button>

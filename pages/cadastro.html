@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="pagina-cheia">
 
 <nav class="nav">
   <div class="container navin">
@@ -37,15 +37,15 @@
 
     <form id="formCadastro" novalidate>
       <div class="field"><label for="cdNome">Nome</label><input id="cdNome" type="text" required placeholder="Seu nome"></div>
-      <div class="field"><label for="cdEmail">E-mail</label><input id="cdEmail" type="email" required placeholder="voce@email.com"></div>
+      <div class="field"><label for="cdEmail">E-mail</label><input id="cdEmail" type="email" required placeholder="voce@email.com"><span class="hint">Coloque um e-mail válido que você se lembre facilmente.</span></div>
       <div class="field"><label for="cdTel">Telefone</label><input id="cdTel" type="tel" required placeholder="(12) 90000-0000"></div>
-      <div class="field"><label for="cdSenha">Senha</label><input id="cdSenha" type="password" required placeholder="Mínimo 6 caracteres"></div>
+      <div class="field"><label for="cdSenha">Senha</label><input id="cdSenha" type="password" required placeholder="Mínimo 6 caracteres"><span class="hint">Digite uma senha segura e que você vá se lembrar.</span></div>
       <div class="field"><label for="cdConf">Confirmação de senha</label><input id="cdConf" type="password" required placeholder="Repita a senha"></div>
       <button class="btn" style="width:100%" type="submit" id="btnCadastro">Criar minha conta</button>
     </form>
 
 <div class="demo-hint">
-  🔒 <strong>Privacidade:</strong> a senha nunca é salva no navegador — ela é convertida em hash no servidor (scrypt) e guardada no banco <code>data/sempreon.db</code>.
+  🔒 <strong>Privacidade:</strong> a senha nunca é salva no navegador — ela é convertida em hash no servidor (scrypt) e guardada com segurança no banco de dados.
 </div>
 
     <div class="form-result" id="cdResultado"></div>

@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="pagina-cheia">
 
 <nav class="nav">
   <div class="container navin">
@@ -43,8 +43,8 @@
 
     <div class="tab-pane active" id="ltab-login">
       <form id="formLogin" novalidate>
-        <div class="field"><label for="lgEmail">E-mail</label><input id="lgEmail" type="email" required placeholder="voce@email.com" autocomplete="email"></div>
-        <div class="field"><label for="lgSenha">Senha</label><input id="lgSenha" type="password" required placeholder="••••••••" autocomplete="current-password"></div>
+        <div class="field"><label for="lgEmail">E-mail</label><input id="lgEmail" type="email" required placeholder="voce@email.com" autocomplete="email"><span class="hint">Coloque um e-mail válido que você se lembre facilmente.</span></div>
+        <div class="field"><label for="lgSenha">Senha</label><input id="lgSenha" type="password" required placeholder="••••••••" autocomplete="current-password"><span class="hint">Digite uma senha segura e que você vá se lembrar.</span></div>
         <button class="btn" style="width:100%" type="submit" id="btnLogin">Entrar</button>
       </form>
 
