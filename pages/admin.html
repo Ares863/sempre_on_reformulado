@@ -65,6 +65,7 @@
           <a href="#tab-ordens" data-tab="ordens">🛠️ Ordens de serviço</a>
           <a href="#tab-servicos" data-tab="servicos">🧰 Serviços</a>
           <a href="#tab-videos" data-tab="videos">🎬 Vídeos</a>
+          <a href="#tab-perfil" data-tab="perfil">👤 Meu perfil</a>
         </aside>
 
         <div>
@@ -113,6 +114,22 @@
               </div>
               <p class="text-muted" style="margin-bottom:18px">Cole o ID do vídeo do YouTube (ex.: <strong>dQw4w9WgXcQ</strong>) para publicá-lo na página do serviço. Vídeos próprios (.mp4) poderão ser enviados quando o back-end estiver integrado.</p>
               <div class="table-wrap"><table><thead><tr><th>Serviço</th><th>Título do vídeo</th><th>ID do YouTube</th><th>Arquivo</th><th>Ações</th></tr></thead><tbody id="tblVideos"></tbody></table></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-perfil">
+            <div class="panel">
+              <div class="panel-head"><h2>Meus dados</h2><span class="badge">Administrador</span></div>
+              <form id="formAdminPerfil" novalidate>
+                <div class="form-grid">
+                  <div class="field"><label>Nome</label><input type="text" id="apNome" autocomplete="name" required></div>
+                  <div class="field"><label>Telefone</label><input type="tel" id="apTel" autocomplete="tel" placeholder="(12) 99999-9999"></div>
+                  <div class="field full"><label>E-mail</label><input type="email" id="apEmail" autocomplete="email" required></div>
+                  <div class="field full"><label>Senha atual (para confirmar as alterações)</label><input type="password" id="apSenha" autocomplete="current-password" required></div>
+                </div>
+                <button class="btn" type="submit" id="btnAdminPerfil">Salvar dados</button>
+                <div class="form-result" id="apResultado"></div>
+              </form>
             </div>
           </div>
         </div>
@@ -202,12 +219,14 @@ function mudarAba(nome) {
   if (nome === 'ordens') renderOrdens();
   if (nome === 'servicos') renderServicos();
   if (nome === 'videos') renderVideos();
+  if (nome === 'perfil') renderPerfil();
 }
 document.querySelectorAll('[data-tab]').forEach(function (el) {
   el.addEventListener('click', function (e) { e.preventDefault(); mudarAba(el.getAttribute('data-tab')); });
 });
 
 // ---------- Estado do painel ----------
+var ADMIN_ATUAL = null;
 function estadoPainel(mostrar) {
   document.getElementById('adminLogin').style.display = mostrar ? 'none' : 'block';
   document.getElementById('adminPainel').style.display = mostrar ? 'block' : 'none';
@@ -232,6 +251,7 @@ document.getElementById('formAdminLogin').addEventListener('submit', function (e
     }
     res.className = 'form-result';
     estadoPainel(true);
+    ADMIN_ATUAL = r.dado;
     document.getElementById('adChip').textContent = r.dado.nome.charAt(0).toUpperCase();
     carregarDashboard();
     toast('Bem-vindo ao painel.', 'ok');
@@ -438,11 +458,49 @@ function renderVideos() {
 API.me().then(function (r) {
   if (r.sucesso && r.dado.tipo === 'admin') {
     estadoPainel(true);
+    ADMIN_ATUAL = r.dado;
     document.getElementById('adChip').textContent = r.dado.nome.charAt(0).toUpperCase();
     carregarDashboard();
   } else {
     estadoPainel(false);
   }
+});
+
+// ---------- Meu perfil ----------
+function renderPerfil() {
+  if (ADMIN_ATUAL) return preencherPerfil(ADMIN_ATUAL);
+  API.me().then(function (r) { if (r.sucesso) preencherPerfil(r.dado); });
+}
+function preencherPerfil(u) {
+  document.getElementById('apNome').value = u.nome || '';
+  document.getElementById('apTel').value = u.telefone || '';
+  document.getElementById('apEmail').value = u.email || '';
+}
+document.getElementById('formAdminPerfil').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = document.getElementById('btnAdminPerfil');
+  var res = document.getElementById('apResultado');
+  var nome = document.getElementById('apNome').value.trim();
+  var email = document.getElementById('apEmail').value.trim();
+  if (!nome) { res.className = 'form-result err'; res.textContent = '⚠ Informe seu nome.'; return; }
+  if (!/^\S+@\S+\.\S+$/.test(email)) { res.className = 'form-result err'; res.textContent = '⚠ Informe um e-mail válido.'; return; }
+  botaoLoading(btn, true);
+  API.alterarPerfil({
+    nome: nome,
+    telefone: document.getElementById('apTel').value.trim(),
+    email: email,
+    senhaAtual: document.getElementById('apSenha').value
+  }).then(function (r) {
+    botaoLoading(btn, false);
+    if (r.sucesso) {
+      ADMIN_ATUAL = r.dado;
+      document.getElementById('apSenha').value = '';
+      document.getElementById('adChip').textContent = r.dado.nome.charAt(0).toUpperCase();
+      res.className = 'form-result ok';
+      res.textContent = '✅ Dados atualizados com sucesso!';
+      toast('Dados atualizados.', 'ok');
+    } else { res.className = 'form-result err'; res.textContent = '⚠ ' + r.erro; }
+  });
 });
 </script>
 </body>

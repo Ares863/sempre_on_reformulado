@@ -70,27 +70,20 @@
       <div class="panel-head"><h2>Minha conta</h2></div>
       <div class="tabs" id="contaTabs">
         <button class="tab active" data-ctab="dados">Meus dados</button>
-        <button class="tab" data-ctab="email">Alterar e-mail</button>
         <button class="tab" data-ctab="senha">Alterar senha</button>
       </div>
       <div class="tab-pane active" id="ctab-dados">
-        <div class="form-grid">
-          <div class="field"><label>Nome</label><div class="fake-input" id="pfNome">—</div></div>
-          <div class="field"><label>Telefone</label><div class="fake-input" id="pfTel">—</div></div>
-          <div class="field full"><label>E-mail</label><div class="fake-input" id="pfEmail">—</div></div>
-        </div>
-        <p class="hint" style="margin-top:12px">Seus dados ficam guardados com segurança no servidor e a sessão é mantida por cookie.</p>
-      </div>
-      <div class="tab-pane" id="ctab-email">
-        <form id="formEmail" novalidate>
-          <div class="field"><label>Senha atual</label><input type="password" id="ccSenha" autocomplete="current-password" required></div>
+        <form id="formPerfil" novalidate>
           <div class="form-grid">
-            <div class="field"><label>Novo e-mail</label><input type="email" id="ccEmail" autocomplete="email" required></div>
-            <div class="field"><label>Confirmar novo e-mail</label><input type="email" id="ccEmail2" required></div>
+            <div class="field"><label>Nome completo</label><input type="text" id="pfNome" autocomplete="name" required></div>
+            <div class="field"><label>Telefone / WhatsApp</label><input type="tel" id="pfTel" autocomplete="tel" placeholder="(12) 99999-9999"></div>
+            <div class="field full"><label>E-mail</label><input type="email" id="pfEmail" autocomplete="email" required></div>
+            <div class="field full"><label>Senha atual (para confirmar as alterações)</label><input type="password" id="pfSenha" autocomplete="current-password" required></div>
           </div>
-          <button class="btn" type="submit" id="btnEmail">Salvar e-mail</button>
-          <div class="form-result" id="ccResultado"></div>
+          <button class="btn" type="submit" id="btnPerfil">Salvar dados</button>
+          <div class="form-result" id="pfResultado"></div>
         </form>
+        <p class="hint" style="margin-top:12px">Seus dados ficam guardados com segurança no servidor e a sessão é mantida por cookie.</p>
       </div>
       <div class="tab-pane" id="ctab-senha">
         <form id="formSenha" novalidate>
@@ -150,9 +143,9 @@ API.me().then(function (rSessao) {
   if (!rSessao.sucesso) { window.location.href = 'login.html'; return; }
   var sessao = rSessao.dado;
   document.getElementById('saudacao').textContent = 'Olá, ' + sessao.nome + '!';
-  document.getElementById('pfNome').textContent = sessao.nome;
-  document.getElementById('pfTel').textContent = sessao.telefone || '—';
-  document.getElementById('pfEmail').textContent = sessao.email;
+  document.getElementById('pfNome').value = sessao.nome;
+  document.getElementById('pfTel').value = sessao.telefone || '';
+  document.getElementById('pfEmail').value = sessao.email;
 
   API.ordensDoCliente(sessao.email).then(function (r) {
     var ordens = r.sucesso ? r.dado : [];
@@ -195,7 +188,7 @@ document.querySelectorAll('#contaTabs .tab').forEach(function (el) {
   el.addEventListener('click', function () {
     var nome = el.getAttribute('data-ctab');
     document.querySelectorAll('#contaTabs .tab').forEach(function (t) { t.classList.toggle('active', t === el); });
-    ['ctab-dados', 'ctab-email', 'ctab-senha'].forEach(function (p) { document.getElementById(p).classList.toggle('active', p === 'ctab-' + nome); });
+    ['ctab-dados', 'ctab-senha'].forEach(function (p) { document.getElementById(p).classList.toggle('active', p === 'ctab-' + nome); });
   });
 });
 
@@ -205,23 +198,23 @@ function mostrarResultado(id, cls, texto) {
   r.innerHTML = texto;
 }
 
-document.getElementById('formEmail').addEventListener('submit', function (e) {
+document.getElementById('formPerfil').addEventListener('submit', function (e) {
   e.preventDefault();
-  var btn = document.getElementById('btnEmail');
-  var novo = document.getElementById('ccEmail').value.trim();
-  var conf = document.getElementById('ccEmail2').value.trim();
-  if (!/^\S+@\S+\.\S+$/.test(novo)) { mostrarResultado('ccResultado', 'err', '⚠ Informe um e-mail válido.'); return; }
-  if (novo !== conf) { mostrarResultado('ccResultado', 'err', '⚠ Os e-mails não conferem.'); return; }
+  var btn = document.getElementById('btnPerfil');
+  var nome = document.getElementById('pfNome').value.trim();
+  var telefone = document.getElementById('pfTel').value.trim();
+  var email = document.getElementById('pfEmail').value.trim();
+  if (!nome) { mostrarResultado('pfResultado', 'err', '⚠ Informe seu nome.'); return; }
+  if (!/^\S+@\S+\.\S+$/.test(email)) { mostrarResultado('pfResultado', 'err', '⚠ Informe um e-mail válido.'); return; }
   botaoLoading(btn, true);
-  API.alterarEmail({ senhaAtual: document.getElementById('ccSenha').value, novoEmail: novo }).then(function (r) {
+  API.alterarPerfil({ nome: nome, telefone: telefone, email: email, senhaAtual: document.getElementById('pfSenha').value }).then(function (r) {
     botaoLoading(btn, false);
     if (r.sucesso) {
-      document.getElementById('pfEmail').textContent = novo;
-      document.getElementById('ccSenha').value = '';
-      document.getElementById('ccEmail').value = '';
-      document.getElementById('ccEmail2').value = '';
-      mostrarResultado('ccResultado', 'ok', '✅ E-mail atualizado para <strong>' + novo + '</strong>. Use-o no próximo login.');
-    } else mostrarResultado('ccResultado', 'err', '⚠ ' + r.erro);
+      document.getElementById('pfSenha').value = '';
+      document.getElementById('saudacao').textContent = 'Olá, ' + r.dado.nome + '!';
+      mostrarResultado('pfResultado', 'ok', '✅ Dados atualizados com sucesso!');
+      toast('Dados atualizados.', 'ok');
+    } else mostrarResultado('pfResultado', 'err', '⚠ ' + r.erro);
   });
 });
 

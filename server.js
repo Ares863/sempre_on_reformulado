@@ -178,6 +178,22 @@ async function apiRota(req, res, url) {
     return ok(res, { alterado: true });
   }
 
+  // ----- Perfil do usuário logado (cliente ou admin): nome, telefone e e-mail
+  if (url.pathname === '/api/conta/atualizar-perfil' && metodo === 'POST') {
+    const u = await usuarioDaRequisicao(req);
+    if (!u) return err(res, 401, 'Faça login para continuar.');
+    if (!confereSenha(corpo.senhaAtual || '', u.senha_salt, u.senha_hash)) return err(res, 401, 'Senha atual incorreta.');
+    const nome = String(corpo.nome || '').trim();
+    const telefone = String(corpo.telefone || '').trim();
+    const novoEmail = String(corpo.email || '').toLowerCase().trim();
+    if (!nome) return err(res, 400, 'Informe seu nome.');
+    if (!/^\S+@\S+\.\S+$/.test(novoEmail)) return err(res, 400, 'Informe um e-mail válido.');
+    const existe = await pool.query('SELECT id FROM usuarios WHERE email = $1 AND id != $2', [novoEmail, u.id]);
+    if (existe.rowCount) return err(res, 409, 'Este e-mail já está em uso por outra conta.');
+    await pool.query('UPDATE usuarios SET nome = $1, telefone = $2, email = $3 WHERE id = $4', [nome, telefone, novoEmail, u.id]);
+    return ok(res, { id: u.id, nome, telefone, email: novoEmail, tipo: u.tipo });
+  }
+
   // ----- Orçamento (público) com upload de fotos (base64 -> arquivo)
   if (url.pathname === '/api/orcamentos' && metodo === 'POST') {
     if (!corpo.nome || !corpo.telefone || !corpo.modelo) return err(res, 400, 'Preencha nome, telefone e modelo do aparelho.');

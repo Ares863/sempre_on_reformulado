@@ -144,6 +144,29 @@ var API = {
     });
   },
 
+  // Perfil do usuário logado (cliente ou admin): nome, telefone e e-mail
+  alterarPerfil: function (dados) {
+    return apiDisponivel().then(function (on) {
+      if (on) return apiReq('POST', '/api/conta/atualizar-perfil', dados).then(mapR);
+      return _delay().then(function () {
+        var s = sessaoCliente() || sessaoAdmin();
+        if (!s) return _err('Faça login para continuar.');
+        if (!dados.nome) return _err('Informe seu nome.');
+        if (!/^\S+@\S+\.\S+$/.test(dados.email)) return _err('Informe um e-mail válido.');
+        var contas = contasLocais();
+        for (var i = 0; i < contas.length; i++) {
+          if (contas[i].email === s.email) {
+            contas[i].nome = dados.nome; contas[i].telefone = dados.telefone; contas[i].email = dados.email;
+            salvarContas(contas);
+          }
+        }
+        if (s.tipo === 'admin') definirSessaoAdmin({ nome: dados.nome, email: dados.email, tipo: 'admin' });
+        else definirSessaoCliente({ nome: dados.nome, email: dados.email, tipo: 'cliente' });
+        return _ok({ nome: dados.nome, telefone: dados.telefone, email: dados.email, tipo: s.tipo });
+      });
+    });
+  },
+
   criarOrdem: function (dados) {
     return apiDisponivel().then(function (on) {
       if (on) return apiReq('POST', '/api/ordens', dados).then(mapR);

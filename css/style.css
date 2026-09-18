@@ -51,12 +51,13 @@ section{padding:76px 0}
   .navin{justify-content:flex-start}
   .navin>.btn{margin-left:auto}
   .nav-toggle{order:10}
-  .links{display:none;position:absolute;top:72px;left:0;right:0;background:#0a141b;flex-direction:column;gap:4px;padding:14px 4%;border-bottom:1px solid var(--line);align-items:stretch}
-  .links.open{display:flex}
-  .links a{padding:12px 6px;border-bottom:1px solid var(--line)}
+  .links{display:none;position:absolute;top:72px;right:0;left:auto;width:min(58vw,300px);height:calc(100vh - 72px);background:#0a141b;flex-direction:column;gap:2px;padding:16px;border-left:1px solid var(--line);border-bottom:1px solid var(--line);align-items:stretch;overflow-y:auto;box-shadow:-22px 0 45px rgba(0,0,0,.5)}
+  .links.open{display:flex;animation:drawerIn .22s ease}
+  .links a{padding:13px 10px;border-bottom:1px solid var(--line)}
   .links a.active:after{display:none}
-  .links .btn{margin-top:10px}
+  .links .btn{margin-top:12px}
 }
+@keyframes drawerIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
 
 /* ---------- Hero ---------- */
 .hero{padding:88px 0 72px;background:radial-gradient(circle at 75% 20%,rgba(39,224,161,.14),transparent 34%),radial-gradient(circle at 20% 30%,rgba(41,125,255,.10),transparent 30%)}

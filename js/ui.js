@@ -8,10 +8,21 @@ function initMenu() {
   var b = document.getElementById('navToggle');
   var links = document.getElementById('navLinks');
   if (!b || !links) return;
-  b.addEventListener('click', function () {
-    links.classList.toggle('open');
-    b.setAttribute('aria-expanded', links.classList.contains('open'));
+  function fechar() {
+    links.classList.remove('open');
+    b.setAttribute('aria-expanded', 'false');
+  }
+  b.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var aberto = links.classList.toggle('open');
+    b.setAttribute('aria-expanded', aberto);
   });
+  // fecha ao tocar num link (útil nos atalhos #âncora) e ao tocar fora
+  links.addEventListener('click', function (e) { if (e.target.closest('a')) fechar(); });
+  document.addEventListener('click', function (e) {
+    if (links.classList.contains('open') && !links.contains(e.target) && !b.contains(e.target)) fechar();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fechar(); });
 }
 
 // ---------- Link ativo no menu ----------
